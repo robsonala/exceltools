@@ -4,6 +4,11 @@ C# Core project to convert:
   - CSV to Excel(xlsx)
   - Excel(xlsx) to CSV *Not implemented yet*
 
+### Dependecies
+- CsvHelper
+- OpenXML SDK
+- Newtonsoft.Json
+
 ### How to use
 
 **CSV 2 Excel**
@@ -24,17 +29,16 @@ $ ./exceltools excel2csv {INFILE} {OUTFILE} "{JSONSETTINGS}"
 ]
 ```
 
-Format Type List:
-| Id | Format |
-| -- | ------:|
-| 0 | General |
-| 1 | 0 |
-| 2 | 0.00 |
-| 3 | #,##0 |
-| 4 | #,##0.00 |
-| 5 | 0% |
-| 6 | 0.00% |
-| 7 | dd/mm/yyyy |
+| FormatID   | FormatDesc               |
+|------------|--------------------------|
+| 0          | General                  |
+| 1          | HEADER (Gray background) |
+| 2          | 0.00                     |
+| 3          | #,##0                    |
+| 4          | #,##0.00                 |
+| 5          | 0%                       |
+| 6          | 0.00%                    |
+| 7          | dd/mm/yyyy               |
 
 *RETURN*
 ok -> File generated

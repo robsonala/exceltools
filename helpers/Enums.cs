@@ -3,9 +3,10 @@
 namespace exceltools.helpers
 {   
     /*
-    Local   Desc        Original
+    Local   Desc        NumberFormat
     ----------------------------
     0       General     0
+    1       HEADER      N/A
     1       0           1
     2       0.00        2
     3       #,##0       3

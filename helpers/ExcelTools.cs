@@ -68,50 +68,56 @@ namespace exceltools.helpers
 		{
             CellFormat cellFormat;
 			var cellFormats = new CellFormats();
-
+            
             // 0   General
 			cellFormats.AppendChild(new CellFormat());
+
+            // 1    HEADER
+            cellFormat = new CellFormat();
+            cellFormat.FillId = 1;
+            cellFormat.ApplyFill = true;
+            cellFormats.AppendChild(cellFormat);
             
-			// 1   0         
+			// 2   0         
             cellFormat = new CellFormat();
             cellFormat.NumberFormatId = 1;
             cellFormat.ApplyNumberFormat = BooleanValue.FromBoolean(true);
 			cellFormats.AppendChild(cellFormat);
 
-			// 2   0.00
+			// 3   0.00
             cellFormat = new CellFormat();
             cellFormat.NumberFormatId = 2;
             cellFormat.ApplyNumberFormat = BooleanValue.FromBoolean(true);
 			cellFormats.AppendChild(cellFormat);
 
-			// 3   #,##0
+			// 4    #,##0
             cellFormat = new CellFormat();
             cellFormat.NumberFormatId = 3;
             cellFormat.ApplyNumberFormat = BooleanValue.FromBoolean(true);
 			cellFormats.AppendChild(cellFormat);
 
-			// 4   #,##0.00
+			// 5    #,##0.00
             cellFormat = new CellFormat();
             cellFormat.NumberFormatId = 4;
             cellFormat.ApplyNumberFormat = BooleanValue.FromBoolean(true);
 			cellFormats.AppendChild(cellFormat);
 
-			// 5   0 %
+			// 6    0 %
             cellFormat = new CellFormat();
             cellFormat.NumberFormatId = 9;
             cellFormat.ApplyNumberFormat = BooleanValue.FromBoolean(true);
 			cellFormats.AppendChild(cellFormat);
 
-			// 6  0.00 %
+			// 7    0.00 %
             cellFormat = new CellFormat();
             cellFormat.NumberFormatId = 10;
             cellFormat.ApplyNumberFormat = BooleanValue.FromBoolean(true);
 			cellFormats.AppendChild(cellFormat);
-   
-			// 7 dd/mm/yyyy
+
+            // 8    dd/mm/yyyy
             cellFormat = new CellFormat();
-			cellFormat.FormatId = 0;
-			cellFormat.NumberFormatId = 500;
+            cellFormat.FormatId = 0;
+            cellFormat.NumberFormatId = 500;
             cellFormat.ApplyNumberFormat = BooleanValue.FromBoolean(true);
 			cellFormats.AppendChild(cellFormat);
 
@@ -122,7 +128,7 @@ namespace exceltools.helpers
 		public Cell createCell(string value, converterSettings settings = null)
 		{
 			var cell = new Cell();
-
+            
 			if (settings != null)
 			{          
 				switch (settings.Type)
@@ -132,17 +138,17 @@ namespace exceltools.helpers
                         cell.DataType = CellValues.String;
 						cell.StyleIndex = (uint)settings.Type;
 						break;
-                    case 1:
                     case 2:
-					case 3:
+                    case 3:
 					case 4:
 					case 5:
 					case 6:
+					case 7:
                         cell.CellValue = new CellValue(value);
                         cell.DataType = CellValues.Number;
 						cell.StyleIndex = (uint)settings.Type;
 						break;
-					case 7:
+					case 8:
                         DateTime auxDate;
                         if (DateTime.TryParse(value, out auxDate))
                         {
@@ -177,14 +183,15 @@ namespace exceltools.helpers
 				var sheetData = new SheetData();
                 worksheetPart.Worksheet = new Worksheet(sheetData);
                 
-				if (settings != null)
-				{
-                    var stylesPart = workbookPart.AddNewPart<WorkbookStylesPart>();
-                    stylesPart.Stylesheet = new Stylesheet();
-                    stylesPart.Stylesheet.NumberingFormats = createCustomNumberFormats();
-                    stylesPart.Stylesheet.CellFormats = registerCellFormats();
-                    stylesPart.Stylesheet.Save();
-				}
+                var stylesPart = workbookPart.AddNewPart<WorkbookStylesPart>();
+                stylesPart.Stylesheet = new Stylesheet();
+                stylesPart.Stylesheet.NumberingFormats = createCustomNumberFormats();
+				stylesPart.Stylesheet.CellFormats = registerCellFormats();
+				stylesPart.Stylesheet.Fills = new Fills(
+    					new Fill(new PatternFill() { PatternType = PatternValues.None }),
+    					new Fill(new PatternFill(new ForegroundColor { Rgb = new HexBinaryValue() { Value = "dddddd" } }) { PatternType = PatternValues.Solid })
+    				);
+                stylesPart.Stylesheet.Save();
             
 				Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
 				var sheet = new Sheet() {
@@ -205,6 +212,7 @@ namespace exceltools.helpers
                     Cell cell = new Cell();
                     cell.DataType = CellValues.String;
                     cell.CellValue = new CellValue(column.ColumnName);
+					cell.StyleIndex = 1;
                     headerRow.AppendChild(cell);
                 }
 
