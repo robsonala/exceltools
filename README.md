@@ -41,22 +41,48 @@ $ ./exceltools excel2csv {INFILE} {OUTFILE} "{JSONSETTINGS}"
 | 7          | dd/mm/yyyy               |
 
 *RETURN*
-ok -> File generated
-error -> File not generated
+| Return    | Description           |
+|-----------|-----------------------|
+| ok        | File generated        |
+| error     | File not generated    |
 
 *Example usage*
 ```sh
 $ ./exceltools excel2csv /opt/example.csv /opt/out/example.xlsx "[{'index':1, 'width': 10, 'type':7}]"
+$ ./exceltools excel2csv /opt/example.csv /opt/out/example.xlsx
 ```
 
 **Excel 2 CSV**
-** Not implemented yet **
+
 ```sh
-$ ./exceltools csv2excel {INFILE} {OUTFILE}
+$ ./exceltools csv2excel {INFILE} {OUTFILE} "{JSONSETTINGS}"
+```
+
+*JSONSETTINGS*
+```
+{
+    "skiphidden": true,
+    "sheets": [
+        "Sheet1"
+        "Sheet2"
+    ]
+}
+```
+
+*RETURN*
+| Return    | Description           |
+|-----------|-----------------------|
+| ok        | File generated        |
+| error     | File not generated    |
+
+*Example usage*
+```sh
+$ ./exceltools excel2csv /opt/example.xlsx /opt/out/example.csv "[{'skiphidden':false, 'sheets':['Sheet1']}]"
+$ ./exceltools excel2csv /opt/example.xlsx /opt/out/example.csv
 ```
 
 ### Todos
--
+- Tests
 
 License
 ----

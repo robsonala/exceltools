@@ -20,10 +20,16 @@ namespace exceltools.helpers
     0       auto
     */
 
-    public class converterSettings
+    public class converterToExcelSettings
     {
 		public int Index { get; set; }
         public float Width { get; set; }
         public int Type { get; set; }
     }  
+
+    public class converterToCsvSettings
+    {
+        public bool? SkipHidden { get; set; }
+        public string[] Sheets { get; set; }
+    }
 }
